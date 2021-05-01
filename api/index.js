@@ -7,6 +7,7 @@ const NaoEncontrado = require("./erros/NaoEncontrado");
 const CampoInvalido = require("./erros/CampoInvalido");
 const DadosNaoFornecidos = require("./erros/DadosNaoFornecidos");
 const ValorNaoSuportado = require("./erros/ValorNaoSuportado");
+const SerelizadorErro = require('./Serializador').SerelizadorErro
 const formatosAceitos = require('./Serializador').formatosAceitos
 app.use(bodyParser.json());
 app.use((req,res,proximo) =>{
@@ -35,9 +36,13 @@ app.use((erro, req, res,proximo) => {
   if(erro instanceof ValorNaoSuportado){
     res.status(406)
   }
+  const serializador = new SerelizadorErro(
+    res.getHeader('Content-Type')
+  )
   res.send(
-    JSON.stringify({
+    serializador({
       mensagem: erro.message,
+      id:erro.idErro
     })
   );
 });
