@@ -9,6 +9,15 @@ constructor({id,titulo,preco,estoque,fornecedor,dataCriacao,dataAtualização,ve
     this.dataAtualizacao = dataAtualizacao;
     this.versao = versao;
 }
+validar (){
+    if(typeof this.titulo !== "string" || this.titulo.length === 0){
+        throw new Error('o Campo título está inválido')
+    }else if(typeof this.preco !== "number" || this.preco === 0){
+        throw new Error('o Campo preço está inválido')
+    }
+
+    }
+
 
 async criar() {
     this.validar()
@@ -23,6 +32,14 @@ async criar() {
     this.dataAtualizacao = resultado.dataAtualizacao;
     this.versao = resultado.versao;
   }
+
+  
+remover(){
+    return Tabela.remover(this.id,this.fornecedor)
+
+  }
 }
+
+
 
 module.exports = Produto

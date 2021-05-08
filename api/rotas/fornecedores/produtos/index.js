@@ -1,17 +1,34 @@
 const roteador = require("express").Router({ mergeParams: true });
 const Tabela = require("./TabelaProduto");
-const Produto = require("./Produto")
+const Produto = require("./Produto");
 roteador.get("/", async (req, res) => {
   const produtos = await Tabela.listar(req.params.idFornecedor);
   res.send(JSON.stringify([]));
 });
 
+roteador.post("/", async (req, res,proximo) => {
+  try {
+    const idFornecedor = req.params.idFornecedor;
+    const body = req.body;
+    const dados = Object.assign({}, body, { fornecedor: idFornecedor });
+    const produto = new Produto(dados);
+    await produto.criar();
+    res.status(201);
+    res.send(produto);
+  }catch(erro){
+    proximo(erro)
+  }
+});
 
-roteador.post('/', async (req,res) =>{
-    const idFornecedor = req.params.idFornecedor
-    const body = req.body
-    const dados = Object.assign({},body,{fornecedor: idFornecedor})
-    const produto = new Produto(dados)
-    await produto.criar()
-})
+roteador.delete("/:id", async (req, res) => {
+  const dados = {
+    id: req.params.id,
+    fornecedor: req.params.idFornecedor,
+  };
+
+  const produto = new Produto(dados);
+  await produto.apagar();
+  res.status(204);
+  res.end;
+});
 module.exports = roteador;
