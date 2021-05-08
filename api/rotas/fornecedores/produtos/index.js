@@ -1,10 +1,9 @@
-const roteador = require('express').Router()
+const roteador = require("express").Router({ mergeParams: true });
+const Tabela = require("./TabelaProduto");
 
+roteador.get("/", async (req, res) => {
+  const produtos = await Tabela.listar(req.params.idFornecedor);
+  res.send(JSON.stringify([]));
+});
 
-roteador.get('/', (req,res) =>{
-    res.send(
-        JSON.stringify([])
-    )
-})
-
-module.exports = roteador
+module.exports = roteador;
