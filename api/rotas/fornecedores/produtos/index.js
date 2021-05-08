@@ -2,13 +2,13 @@ const roteador = require("express").Router({ mergeParams: true });
 const Tabela = require("./TabelaProduto");
 const Produto = require("./Produto");
 roteador.get("/", async (req, res) => {
-  const produtos = await Tabela.listar(req.params.idFornecedor);
-  res.send(JSON.stringify([]));
+  const produtos = await Tabela.listar(req.fornecedor.id);
+  res.send(JSON.stringify([produtos]));
 });
 
 roteador.post("/", async (req, res,proximo) => {
   try {
-    const idFornecedor = req.params.idFornecedor;
+    const idFornecedor =req.fornecedor.id;
     const body = req.body;
     const dados = Object.assign({}, body, { fornecedor: idFornecedor });
     const produto = new Produto(dados);
@@ -23,7 +23,7 @@ roteador.post("/", async (req, res,proximo) => {
 roteador.delete("/:id", async (req, res) => {
   const dados = {
     id: req.params.id,
-    fornecedor: req.params.idFornecedor,
+    fornecedor:req.fornecedor.id,
   };
 
   const produto = new Produto(dados);
