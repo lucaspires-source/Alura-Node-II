@@ -61,6 +61,16 @@ class SerelizadorFornecedor extends Serializador {
   }
 }
 
+class SerelizadorProduto extends Serelizador{
+  constructor(contentType,camposExtras){
+    super()
+    this.contentType = contentType;
+    this.camposPublicos = ["id","titulo"].concat(camposExtras || [])
+
+    this.tagSingular ="produto"
+    this.tagPlural="produtos"
+  }
+}
 class SerelizadorErro extends Serializador {
   constructor(contentType, camposExtras) {
     super();
@@ -75,4 +85,5 @@ module.exports = {
   formatosAceitos: ["application/json", "application/xml"],
   SerelizadorFornecedor: SerelizadorFornecedor,
   SerelizadorErro: SerelizadorErro,
+  SerelizadorProduto:SerelizadorProduto
 };
