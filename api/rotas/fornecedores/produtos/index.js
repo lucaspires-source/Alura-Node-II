@@ -62,6 +62,24 @@ try{
 }catch(erro){
   proximo(erro)
 }
+})
 
+roteador.put('/:id', async(req,res) =>{
+try{
+  const dados = Object.assign(
+    {},
+    req.body,
+    {
+      id:requisicao.params.id,
+      fornecedor:requisicao.fornecedor.id
+    }
+  )
+    const produto = new Produto(dados)
+    await  produto.atualizar();
+    res.status(204);
+    res.end();
+}catch (erro) {
+      proximo(erro);
+    }
 })
 module.exports = roteador;
