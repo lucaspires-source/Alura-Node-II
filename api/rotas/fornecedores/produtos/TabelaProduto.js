@@ -1,5 +1,5 @@
 const Modelo = require("./ModeloTabelaProduto");
-
+const instancia = require('../../../banco-de-dados')
 module.exports = {
   listar(idFornecedor) {
     return Modelo.findAll({
